@@ -1,14 +1,59 @@
 const express = require("express");
 const { PrismaClient } = require("@prisma/client");
+const authMiddleware = require("../middleware/authMiddleware");
 
 const prisma = new PrismaClient();
 const router = express.Router();
 
-// GET: Retrieve all bill shares for a specific bill
-router.get("/:billId/billShares", async (req, res) => {
-  const { billId } = req.params;
+router.use(authMiddleware);
+
+// GET: Retrieve all bill shares the user is part of
+router.get("/", authMiddleware, async (req, res) => {
+  const userId = req.user.id; // User ID from the JWT token
 
   try {
+    // Find all BillShare records where the user is involved in a bill
+    const userBillShares = await prisma.billShare.findMany({
+      where: {
+        userId: userId,
+      },
+      include: {
+        bill: true, // Include bill details
+        user: true, // Include user details
+      },
+    });
+
+    if (!userBillShares || userBillShares.length === 0) {
+      return res.status(200).json([]); // Return an empty array if no bill shares found
+    }
+
+    res.status(200).json(userBillShares);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error retrieving bill shares" });
+  }
+});
+
+// GET: Retrieve all bill shares for a specific bill
+router.get("/:billId", authMiddleware, async (req, res) => {
+  const { billId } = req.params;
+  const userId = req.user.id; // User ID from the JWT token
+
+  try {
+    // Check if the user is part of the bill or bill share
+    const userInBill = await prisma.billUser.findFirst({
+      where: {
+        billId: parseInt(billId),
+        userId: userId,
+      },
+    });
+
+    if (!userInBill) {
+      return res
+        .status(403)
+        .json({ error: "You are not authorized to view these bill shares" });
+    }
+
     const billShares = await prisma.billShare.findMany({
       where: { billId: parseInt(billId) },
       include: {
