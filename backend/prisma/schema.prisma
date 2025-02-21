@@ -15,52 +15,37 @@ datasource db {
 
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
+  id       Int      @id @default(autoincrement())
+  name     String
+  email    String   @unique
   password String
-  name      String?
-  bills     BillUser[]
-  createdBills Bill[]
-  billShares BillShare[]
+  debts    Debt[]
 }
 
-model Bill {
-  id              Int       @id @default(autoincrement())
-  title           String
-  description     String?
-  totalAmount     Float
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
-  createdByUserId Int
-  createdBy       User      @relation(fields: [createdByUserId], references: [id])
-  users           BillUser[]
-  billShares      BillShare[]
+model Debt {
+  id           Int           @id @default(autoincrement())
+  slug         String        @unique 
+  amountOwed   Float         @default(0)
+  title     String 
+  description  String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  userId       Int
+  user         User          @relation(fields: [userId], references: [id])
+  transactions Transaction[]
 }
 
-model BillUser {
-  id     Int   @id @default(autoincrement())
-  userId Int
-  billId Int
-  user   User  @relation(fields: [userId], references: [id])
-  bill   Bill  @relation(fields: [billId], references: [id])
-
-  @@unique([userId, billId])
+model Transaction {
+  id         Int       @id @default(autoincrement())
+  debtId     Int
+  debt       Debt      @relation(fields: [debtId], references: [id])
+  amount     Float
+  type       TransactionType
+  description String
+  createdAt  DateTime  @default(now())
 }
 
-enum PaymentStatus {
-  PENDING
-  PAID
-  PARTIALLY_PAID
-}
-
-model BillShare {
-  id        Int      @id @default(autoincrement())
-  amount    Float
-  status    PaymentStatus @default(PENDING)
-  billId    Int
-  bill      Bill     @relation(fields: [billId], references: [id])
-  userId    Int
-  user      User     @relation(fields: [userId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+enum TransactionType {
+  INCREASE
+  PAYMENT
 }
