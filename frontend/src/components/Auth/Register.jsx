@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import useAuth from "../../hooks/useAuth";
 
 const Register = () => {
+  useAuth();
   const [formData, setFormData] = useState({
     email: "",
     name: "",
@@ -21,9 +23,8 @@ const Register = () => {
         body: JSON.stringify(formData),
       });
       if (response.ok) {
-        alert("User created successfully!");
         const data = await response.json();
-        window.location.href = "/";
+        window.location.href = "/dashboard";
         localStorage.setItem("token", data.token);
       } else {
         alert("Failed to create user. email already exists");

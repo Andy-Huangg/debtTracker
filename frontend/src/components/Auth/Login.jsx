@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-
+import useAuth from "../../hooks/useAuth";
 const Login = () => {
+  useAuth();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -18,10 +19,9 @@ const Login = () => {
       body: JSON.stringify(formData),
     });
     if (response.ok) {
-      alert("successfully logged in!");
       const data = await response.json();
       localStorage.setItem("token", data.token);
-      window.location.href = "/";
+      window.location.href = "/dashboard";
     } else {
       alert("Failed to login.");
     }
