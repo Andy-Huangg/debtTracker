@@ -8,8 +8,6 @@ const router = express.Router();
 
 router.use(authMiddleware);
 
-// TODO
-
 // GET: Get debts by current user
 router.get("/", async (req, res) => {
   try {
@@ -36,8 +34,9 @@ router.get("/:slug", async (req, res) => {
   try {
     const debt = await prisma.debt.findUnique({
       where: {
-        slug: slug, // Find debt by UUID slug
+        slug: slug,
       },
+      include: { user: true, transactions: { orderBy: { createdAt: "desc" } } },
     });
 
     if (!debt) {
@@ -63,21 +62,35 @@ router.post("/", async (req, res) => {
     // Generate slug
     const slug = uuidv4();
 
-    // Create a new debt
-    const newDebt = await prisma.debt.create({
-      data: {
-        title,
-        description,
-        amountOwed,
-        slug,
-        userId: req.user.id, // Associate the debt with a user
-      },
-    });
+    // Create a new debt and initial transaction
+    const [newDebt, initialTransaction] = await prisma.$transaction([
+      prisma.debt.create({
+        data: {
+          title,
+          description,
+          amountOwed,
+          slug,
+          userId: req.user.id,
+        },
+      }),
+      prisma.transaction.create({
+        data: {
+          debt: {
+            connect: { slug: slug },
+          },
+          amount: amountOwed,
+          type: "INCREASE",
+          description: "Initial transaction",
+        },
+      }),
+    ]);
 
-    res.status(201).json(newDebt);
+    res.status(201).json({ newDebt, initialTransaction });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error creating debt" });
+    res
+      .status(500)
+      .json({ error: "Error creating debt and initial transaction" });
   }
 });
 
@@ -97,11 +110,9 @@ router.post("/:slug/transactions", async (req, res) => {
     if (debt.userId !== userId)
       return res.status(403).json({ message: "Unauthorized" });
 
-    // Calculate new amountOwed based on transaction type
     const newAmountOwed =
       type === "INCREASE" ? debt.amountOwed + amount : debt.amountOwed - amount;
 
-    // Use transaction to ensure both operations succeed together
     const [transaction, updatedDebt] = await prisma.$transaction([
       prisma.transaction.create({
         data: {
