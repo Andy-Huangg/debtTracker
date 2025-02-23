@@ -43,7 +43,9 @@ router.get("/:slug", async (req, res) => {
       return res.status(404).json({ message: "Debt not found" });
     }
 
-    return res.json(debt);
+    // Add current user id to result
+    const debtWithUserID = { ...debt, currentUserId: req.user.id };
+    return res.json(debtWithUserID);
   } catch (error) {
     return res.status(500).json({ message: "Server error" });
   }

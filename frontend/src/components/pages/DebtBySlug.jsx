@@ -71,14 +71,16 @@ export default function DebtBySlug() {
         <div></div>
       </div>
 
-      <div className="flex-shrink-0 w-64 bg-slate-100 p-8 rounded-2xl shadow-lg">
-        <button
-          onClick={openModal}
-          className="mt-4 p-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
-        >
-          Create Transaction
-        </button>
-      </div>
+      {debt.currentUserId === debt.userId && (
+        <div className="flex-shrink-0 w-64 bg-slate-100 p-8 rounded-2xl shadow-lg">
+          <button
+            onClick={openModal}
+            className="mt-4 p-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+          >
+            Create Transaction
+          </button>
+        </div>
+      )}
 
       <CreateTransactionModal
         isOpen={modalIsOpen}
