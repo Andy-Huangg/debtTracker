@@ -70,7 +70,6 @@ export default function DebtBySlug() {
         </ul>
         <div></div>
       </div>
-
       {debt.currentUserId === debt.userId && (
         <div className="flex-shrink-0 w-64 bg-slate-100 p-8 rounded-2xl shadow-lg">
           <button

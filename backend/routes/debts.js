@@ -2,14 +2,13 @@ const express = require("express");
 const { PrismaClient } = require("@prisma/client");
 const authMiddleware = require("../middleware/authMiddleware");
 const { v4: uuidv4 } = require("uuid");
+const jwt = require("jsonwebtoken");
 
 const prisma = new PrismaClient();
 const router = express.Router();
 
-router.use(authMiddleware);
-
 // GET: Get debts by current user
-router.get("/", async (req, res) => {
+router.get("/", authMiddleware, async (req, res) => {
   try {
     const debt = await prisma.debt.findMany({
       where: {
@@ -44,7 +43,17 @@ router.get("/:slug", async (req, res) => {
     }
 
     // Add current user id to result
-    const debtWithUserID = { ...debt, currentUserId: req.user.id };
+    const token = req.header("Authorization");
+    currentUserId = null;
+    if (token) {
+      try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        currentUserId = decoded.user.id;
+      } catch (err) {}
+    }
+    const debtWithUserID = currentUserId
+      ? { ...debt, currentUserId: currentUserId }
+      : debt;
     return res.json(debtWithUserID);
   } catch (error) {
     return res.status(500).json({ message: "Server error" });
@@ -52,7 +61,7 @@ router.get("/:slug", async (req, res) => {
 });
 
 // POST: Create a new debt
-router.post("/", async (req, res) => {
+router.post("/", authMiddleware, async (req, res) => {
   const { title, description, amountOwed } = req.body;
 
   // Validate the input
@@ -97,7 +106,7 @@ router.post("/", async (req, res) => {
 });
 
 // POST  - Add a transaction and update amountOwed
-router.post("/:slug/transactions", async (req, res) => {
+router.post("/:slug/transactions", authMiddleware, async (req, res) => {
   const { slug } = req.params;
   const { amount, type, description } = req.body;
   const userId = req.user.id;
