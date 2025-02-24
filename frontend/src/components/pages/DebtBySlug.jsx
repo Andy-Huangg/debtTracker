@@ -48,7 +48,11 @@ export default function DebtBySlug() {
       <div className="flex-grow max-w-2xl bg-white p-8 rounded-2xl shadow-lg">
         <div>
           <h1>Title: {debt.title}</h1>
-          <p>Description: {debt.description}</p>
+          <pre>
+            Description:
+            <br></br>
+            {debt.description}
+          </pre>
           <br></br>
           <h1>
             <strong>${debt.amountOwed} </strong>Is owed to {debt.user.name}
@@ -63,7 +67,7 @@ export default function DebtBySlug() {
             <li key={transaction.id}>
               <p>Amount: ${transaction.amount}</p>
               <p>Type: {transaction.type}</p>
-              <p>Description: {transaction.description}</p>
+              <pre>Description: {transaction.description}</pre>
               <p>Date: {new Date(transaction.createdAt).toLocaleString()}</p>
             </li>
           ))}
