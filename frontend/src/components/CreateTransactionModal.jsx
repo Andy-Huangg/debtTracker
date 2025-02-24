@@ -80,28 +80,32 @@ export default function CreateTransactionModal({
     >
       <h2>Create Transaction</h2>
       <form onSubmit={handleSubmit}>
+        <label>Transaction Amount</label>
         <input
           type="number"
-          placeholder="Amount"
+          placeholder="Enter the transaction amount"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
           className="w-full p-2 border rounded mb-2"
           required
         />
+        <label>Transaction Type</label>
         <select
           value={type}
           onChange={(e) => setType(e.target.value)}
           className="w-full p-2 border rounded mb-2"
         >
-          <option value="INCREASE">Increase</option>
-          <option value="PAYMENT">Decrease</option>
+          <option value="INCREASE">Increase Debt</option>
+          <option value="PAYMENT">Payment</option>
         </select>
+        <label>Description</label>
         <textarea
           className="w-full p-2 border rounded mb-2"
           rows="4"
-          placeholder="Description (optional)"
+          placeholder="Enter a description for the transaction"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+          required
         ></textarea>
         <button
           type="submit"

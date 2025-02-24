@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import CreateTransactionModal from "../CreateTransactionModal";
+import TransactionList from "../Transaction";
 
 export default function DebtBySlug() {
   const { slug } = useParams();
@@ -60,19 +61,7 @@ export default function DebtBySlug() {
         </div>
         {/** Add transaction history here*/}
         <h2>Transaction History</h2>
-        <ul>
-          <br></br>
-          <br></br>
-          {debt.transactions.map((transaction) => (
-            <li key={transaction.id}>
-              <p>Amount: ${transaction.amount}</p>
-              <p>Type: {transaction.type}</p>
-              <pre>Description: {transaction.description}</pre>
-              <p>Date: {new Date(transaction.createdAt).toLocaleString()}</p>
-            </li>
-          ))}
-        </ul>
-        <div></div>
+        <TransactionList transactions={debt.transactions} />
       </div>
       {debt.currentUserId === debt.userId && (
         <div className="flex-shrink-0 w-64 bg-slate-100 p-8 rounded-2xl shadow-lg">
