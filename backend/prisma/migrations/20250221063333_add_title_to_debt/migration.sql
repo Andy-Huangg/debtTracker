@@ -5,7 +5,7 @@
 
 */
 -- AlterTable
-ALTER TABLE "Debt" ADD COLUMN "title" TEXT NOT NULL DEFAULT 'Untitled';
+ALTER TABLE "Debt" ADD COLUMN "title" TEXT NOT NULL DEFAULT 'OPEN';
 
 -- Remove the default value after the column has been added
 ALTER TABLE "Debt" ALTER COLUMN "title" DROP DEFAULT;

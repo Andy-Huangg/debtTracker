@@ -82,6 +82,7 @@ router.post("/", authMiddleware, async (req, res) => {
           amountOwed,
           slug,
           userId: req.user.id,
+          status: "OPEN",
         },
       }),
       prisma.transaction.create({
@@ -145,4 +146,40 @@ router.post("/:slug/transactions", authMiddleware, async (req, res) => {
   }
 });
 
+// PATCH: Update a debt
+router.patch("/:slug", authMiddleware, async (req, res) => {
+  const { slug } = req.params;
+  const { title, description, amountOwed, status } = req.body;
+  const userId = req.user.id;
+
+  try {
+    const debt = await prisma.debt.findUnique({
+      where: { slug },
+    });
+
+    if (!debt) {
+      return res.status(404).json({ message: "Debt not found" });
+    }
+
+    if (debt.userId !== userId) {
+      return res.status(403).json({ message: "Unauthorized" });
+    }
+
+    const updatedDebt = await prisma.debt.update({
+      where: { slug },
+      data: {
+        title: title !== undefined ? title : debt.title,
+        description: description !== undefined ? description : debt.description,
+        amountOwed: amountOwed !== undefined ? amountOwed : debt.amountOwed,
+        status: status !== undefined ? status : debt.status,
+      },
+    });
+
+    return res.json({ message: "Debt updated successfully", updatedDebt });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Server error", error: error.message });
+  }
+});
 module.exports = router;

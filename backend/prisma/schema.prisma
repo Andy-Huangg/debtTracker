@@ -26,13 +26,19 @@ model Debt {
   id           Int           @id @default(autoincrement())
   slug         String        @unique 
   amountOwed   Float         @default(0)
-  title     String 
+  title        String 
   description  String?
+  status       DebtStatus
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
   userId       Int
   user         User          @relation(fields: [userId], references: [id])
   transactions Transaction[]
+}
+
+enum DebtStatus {
+  OPEN
+  CLOSED
 }
 
 model Transaction {
