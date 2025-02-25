@@ -8,8 +8,8 @@ import Login from "./components/Auth/Login.jsx";
 
 import HomePage from "./components/pages/HomePage.jsx";
 import Dashboard from "./components/pages/Dashboard.jsx";
-import CreateDebt from "./components/pages/CreateDebt.jsx";
 import DebtBySlug from "./components/pages/DebtBySlug.jsx";
+import CreateDebt from "./components/pages/CreateDebt.jsx";
 
 const router = createBrowserRouter([
   {

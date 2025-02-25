@@ -119,6 +119,8 @@ router.post("/:slug/transactions", authMiddleware, async (req, res) => {
     });
 
     if (!debt) return res.status(404).json({ message: "Debt not found" });
+    if (debt.status === "CLOSED")
+      return res.status(400).json({ message: "Debt is closed" });
     if (debt.userId !== userId)
       return res.status(403).json({ message: "Unauthorized" });
 

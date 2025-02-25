@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import CreateTransactionModal from "../modals/CreateTransactionModal";
 import TransactionList from "../Transaction";
 import CloseDebtModal from "../modals/CloseDebtModal";
+import RedirectButton from "../RedirectButton";
 
 export default function DebtBySlug() {
   const { slug } = useParams();
@@ -59,6 +60,7 @@ export default function DebtBySlug() {
       <div className="flex-grow max-w-2xl bg-white p-8 rounded-2xl shadow-lg">
         <div>
           <h1>Title: {debt.title}</h1>
+          <h1>Status: {debt.status}</h1>
           <pre>
             Description:
             <br></br>
@@ -72,7 +74,7 @@ export default function DebtBySlug() {
         <h2>Transaction History</h2>
         <TransactionList transactions={debt.transactions} />
       </div>
-      {debt.currentUserId === debt.userId && (
+      {debt.currentUserId === debt.userId && debt.status === "OPEN" && (
         <div className="flex-shrink-0 w-64 bg-slate-100 p-8 rounded-2xl shadow-lg">
           <button
             onClick={openTransactionModal}
