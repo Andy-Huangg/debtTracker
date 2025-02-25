@@ -1,8 +1,10 @@
 import { useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import RedirectButton from "../RedirectButton";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateDebt() {
+  const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [amountOwed, setAmountOwed] = useState("");
@@ -28,13 +30,13 @@ export default function CreateDebt() {
         body: JSON.stringify(debtData),
       });
 
-      console.log(response);
-
       if (!response.ok) {
         throw new Error("Failed to create debt");
       }
 
-      alert("debt created successfully!");
+      const data = await response.json();
+
+      navigate(`/debts/${data.newDebt.slug}`);
       setTitle("");
       setDescription("");
       setAmountOwed("");
