@@ -23,6 +23,7 @@ app.options(
     credentials: true,
   })
 );
+console.log(process.env.FRONTEND_URL);
 app.use(express.json());
 app.use("/auth", authRouter);
 app.use("/api/debts", debtsRouter);
