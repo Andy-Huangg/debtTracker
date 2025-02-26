@@ -11,7 +11,6 @@ require("dotenv").config();
 // POST: Register a new user
 router.post("/register", async (req, res) => {
   const { email, password, name } = req.body;
-  console.log(password);
   const existingUser = await prisma.user.findUnique({ where: { email } });
   if (existingUser) return res.status(400).json({ msg: "User already exists" });
 

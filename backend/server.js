@@ -11,18 +11,13 @@ const prisma = new PrismaClient();
 
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL,
+    origin: process.env.FRONTEND_URL || "https://debt-tracker-eight.vercel.app",
     credentials: true,
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    allowedHeaders: "Content-Type, Authorization",
   })
 );
 
-app.options(
-  "*",
-  cors({
-    origin: process.env.FRONTEND_URL,
-    credentials: true,
-  })
-);
 console.log(process.env.FRONTEND_URL);
 app.use(express.json());
 app.use("/auth", authRouter);
