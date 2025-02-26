@@ -47,7 +47,6 @@ export default function CloseDebtModal({ isOpen, onRequestClose, slug }) {
       }
 
       onRequestClose();
-      navigate("/dashboard");
     } catch (error) {
       console.error("Error closing debt:", error);
       alert("Error closing debt");

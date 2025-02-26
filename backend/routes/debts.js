@@ -166,7 +166,6 @@ router.patch("/:slug", authMiddleware, async (req, res) => {
     if (debt.userId !== userId) {
       return res.status(403).json({ message: "Unauthorized" });
     }
-
     const updatedDebt = await prisma.debt.update({
       where: { slug },
       data: {

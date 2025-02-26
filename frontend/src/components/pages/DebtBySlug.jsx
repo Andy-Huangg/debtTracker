@@ -4,12 +4,14 @@ import CreateTransactionModal from "../modals/CreateTransactionModal";
 import TransactionList from "../Transaction";
 import CloseDebtModal from "../modals/CloseDebtModal";
 import RedirectButton from "../RedirectButton";
+import EditDebtModal from "../modals/EditDebtModal";
 
 export default function DebtBySlug() {
   const { slug } = useParams();
   const [debt, setDebt] = useState(null);
   const [transactionModalIsOpen, setTransactionModalIsOpen] = useState(false);
   const [closeDebtModalIsOpen, setCloseDebtModalIsOpen] = useState(false);
+  const [editDebtModalIsOpen, setEditDebtModalIsOpen] = useState(false);
 
   const fetchDebtDetails = async () => {
     const token = localStorage.getItem("token");
@@ -49,6 +51,15 @@ export default function DebtBySlug() {
 
   const closeDebtModal = () => {
     setCloseDebtModalIsOpen(false);
+    fetchDebtDetails();
+  };
+  const openEditDebtModal = () => {
+    setEditDebtModalIsOpen(true);
+  };
+
+  const closeEditDebtModal = () => {
+    setEditDebtModalIsOpen(false);
+    fetchDebtDetails();
   };
 
   if (!debt) {
@@ -77,6 +88,12 @@ export default function DebtBySlug() {
       {debt.currentUserId === debt.userId && debt.status === "OPEN" && (
         <div className="flex-shrink-0 w-64 bg-slate-100 p-8 rounded-2xl shadow-lg">
           <button
+            onClick={openEditDebtModal}
+            className="mt-4 p-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+          >
+            Edit debt details
+          </button>
+          <button
             onClick={openTransactionModal}
             className="mt-4 p-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
           >
@@ -100,6 +117,12 @@ export default function DebtBySlug() {
         isOpen={closeDebtModalIsOpen}
         onRequestClose={closeDebtModal}
         slug={slug}
+      />
+      <EditDebtModal
+        isOpen={editDebtModalIsOpen}
+        onRequestClose={closeEditDebtModal}
+        slug={slug}
+        debt={debt}
       />
     </div>
   );
