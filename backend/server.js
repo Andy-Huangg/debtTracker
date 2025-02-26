@@ -15,6 +15,14 @@ app.use(
     credentials: true,
   })
 );
+
+app.options(
+  "*",
+  cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use("/auth", authRouter);
 app.use("/api/debts", debtsRouter);
