@@ -1,6 +1,6 @@
 import { useState } from "react";
 import useAuth from "../../hooks/useAuth";
-import RedirectButton from "../RedirectButton";
+import RedirectButton from "../Common/RedirectButton";
 import { useNavigate } from "react-router-dom";
 
 export default function CreateDebt() {

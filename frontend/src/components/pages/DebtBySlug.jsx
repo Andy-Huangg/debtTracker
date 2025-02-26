@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import CreateTransactionModal from "../modals/CreateTransactionModal";
-import TransactionList from "../Transaction";
+import TransactionList from "../Common/Transaction";
 import CloseDebtModal from "../modals/CloseDebtModal";
-import RedirectButton from "../RedirectButton";
+import RedirectButton from "../Common/RedirectButton";
 import EditDebtModal from "../modals/EditDebtModal";
 
 export default function DebtBySlug() {

@@ -1,8 +1,8 @@
 import React from "react";
 import useAuth from "../../hooks/useAuth";
-import LogOut from "../LogOut";
-import RedirectButton from "../RedirectButton";
-import Debts from "../Debts";
+import LogOut from "../Common/LogOut";
+import RedirectButton from "../Common/RedirectButton";
+import Debts from "../Common/Debts";
 
 const Dashboard = () => {
   useAuth();
