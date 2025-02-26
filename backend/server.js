@@ -9,9 +9,11 @@ const app = express();
 const PORT = process.env.PGPORT || 5000;
 const prisma = new PrismaClient();
 
+app.options("*", cors());
+
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "https://debt-tracker-eight.vercel.app",
+    origin: "*",
     credentials: true,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     allowedHeaders: "Content-Type, Authorization",
