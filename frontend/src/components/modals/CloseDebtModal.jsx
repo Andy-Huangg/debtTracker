@@ -12,14 +12,17 @@ export default function CloseDebtModal({ isOpen, onRequestClose, slug }) {
     const token = localStorage.getItem("token");
 
     try {
-      const response = await fetch(`http://localhost:5000/api/debts/${slug}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token,
-        },
-        body: JSON.stringify({ status: "CLOSED" }),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/debts/${slug}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
+          body: JSON.stringify({ status: "CLOSED" }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to close debt");

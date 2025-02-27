@@ -16,12 +16,15 @@ export default function DebtBySlug() {
   const fetchDebtDetails = async () => {
     const token = localStorage.getItem("token");
     try {
-      const response = await fetch(`http://localhost:5000/api/debts/${slug}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token,
-        },
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/debts/${slug}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
+        }
+      );
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }

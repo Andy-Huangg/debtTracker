@@ -9,11 +9,13 @@ const app = express();
 const PORT = process.env.PGPORT || 5000;
 const prisma = new PrismaClient();
 
-app.options("*", cors());
+const allowedOrigin = process.env.FRONTEND_URL || "*";
+
+app.options("*", cors({ origin: allowedOrigin }));
 
 app.use(
   cors({
-    origin: "*",
+    origin: allowedOrigin,
     credentials: true,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     allowedHeaders: "Content-Type, Authorization",

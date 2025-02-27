@@ -25,7 +25,7 @@ export default function CreateTransactionModal({
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/debts/${slug}/transactions`,
+        `${import.meta.env.VITE_API_URL}/api/debts/${slug}/transactions`,
         {
           method: "POST",
           headers: {

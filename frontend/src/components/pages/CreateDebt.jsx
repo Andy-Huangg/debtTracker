@@ -21,14 +21,17 @@ export default function CreateDebt() {
     };
 
     try {
-      const response = await fetch("http://localhost:5000/api/debts", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token,
-        },
-        body: JSON.stringify(debtData),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/debts`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
+          body: JSON.stringify(debtData),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to create debt");
