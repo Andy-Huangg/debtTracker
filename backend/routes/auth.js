@@ -19,9 +19,8 @@ router.post("/register", async (req, res) => {
       .status(400)
       .json({ msg: "Password is required and must be a string" });
   }
-  console.log(password);
-  // const hashedPassword = await bcrypt.hash(String(password), 10);
-  hashedPassword = password;
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(String(password), salt);
 
   const user = await prisma.user.create({
     data: { email, password: hashedPassword, name },
