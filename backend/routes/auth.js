@@ -8,6 +8,8 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
+bcrypt.setRandomFallback(() => require("crypto").randomBytes(16));
+
 // POST: Register a new user
 router.post("/register", async (req, res) => {
   const { email, password, name } = req.body;
