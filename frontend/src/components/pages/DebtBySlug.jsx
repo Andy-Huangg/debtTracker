@@ -108,35 +108,45 @@ export default function DebtBySlug() {
           </h1>
         </div>
         <h2>Transaction History</h2>
-        <TransactionList transactions={debt.transactions} />
+        {debt ? (
+          <TransactionList transactions={debt.transactions} />
+        ) : (
+          <div>Loading...</div>
+        )}
       </div>
 
       <div className="flex-shrink-0 w-96">
-        {debt.currentUserId === debt.userId && debt.status === "OPEN" && (
+        {debt.currentUserId === debt.userId && (
           <div className="flex-shrink-0 w-64 bg-slate-100 p-8 rounded-2xl shadow-lg">
             <RedirectButton redirectUrl={"/dashboard"}>
               Back to Dashboard
             </RedirectButton>
-            <button
-              onClick={openEditDebtModal}
-              className="mt-4 p-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
-            >
-              Edit debt details
-            </button>
-            <button
-              onClick={openTransactionModal}
-              className="mt-4 p-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
-            >
-              Create Transaction
-            </button>
-            <button
-              onClick={openCloseDebtModal}
-              className="mt-4 p-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
-            >
-              Close debt
-            </button>
+
+            {debt.currentUserId === debt.userId && debt.status === "OPEN" && (
+              <div>
+                <button
+                  onClick={openEditDebtModal}
+                  className="mt-4 p-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+                >
+                  Edit debt details
+                </button>
+                <button
+                  onClick={openTransactionModal}
+                  className="mt-4 p-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+                >
+                  Create Transaction
+                </button>
+                <button
+                  onClick={openCloseDebtModal}
+                  className="mt-4 p-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
+                >
+                  Close debt
+                </button>
+              </div>
+            )}
           </div>
         )}
+
         <div className="mt-4 bg-slate-100 p-8 rounded-2xl shadow-lg">
           <h2 className="font-bold mb-2">Share this debt for viewing</h2>
           <div className="flex items-center mt-2">

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function Debts() {
   const [debts, setDebts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,6 +26,8 @@ export default function Debts() {
         setDebts(data);
       } catch (error) {
         console.error("Error fetching debts:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -32,7 +35,14 @@ export default function Debts() {
   }, []);
   const openDebts = debts.filter((debt) => debt.status === "OPEN");
   const closedDebts = debts.filter((debt) => debt.status === "CLOSED");
-
+  if (loading) {
+    return (
+      <div className="max-w-lg mx-auto p-6 bg-white shadow-md rounded-lg">
+        <h2 className="text-xl font-bold mb-4">Open Debts Owing to You</h2>
+        Loading...
+      </div>
+    );
+  }
   return (
     <div className="max-w-lg mx-auto p-6 bg-white shadow-md rounded-lg">
       <h2 className="text-xl font-bold mb-4">Open Debts Owing to You</h2>
