@@ -96,7 +96,7 @@ export default function DebtBySlug() {
             </h1>
           </div>
 
-          <pre>
+          <pre className="font-sans">
             Description:
             <br></br>
             <strong>{debt.description}</strong>
@@ -107,7 +107,10 @@ export default function DebtBySlug() {
             <strong>{debt.user.userName}</strong>
           </h1>
         </div>
-        <h2>Transaction History</h2>
+        <div className="flex justify-between mt-4 mb-4">
+          <h2>Transaction History</h2>
+          <h2>Created on: {new Date(debt.createdAt).toLocaleString()}</h2>
+        </div>
         {debt ? (
           <TransactionList transactions={debt.transactions} />
         ) : (
