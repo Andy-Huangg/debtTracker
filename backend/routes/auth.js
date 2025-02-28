@@ -12,8 +12,8 @@ bcrypt.setRandomFallback(() => require("crypto").randomBytes(16));
 
 // POST: Register a new user
 router.post("/register", async (req, res) => {
-  const { email, password, name } = req.body;
-  const existingUser = await prisma.user.findUnique({ where: { email } });
+  const { password, userName } = req.body;
+  const existingUser = await prisma.user.findUnique({ where: { userName } });
   if (existingUser) return res.status(400).json({ msg: "User already exists" });
 
   if (!password || typeof password !== "string") {
@@ -25,7 +25,7 @@ router.post("/register", async (req, res) => {
   const hashedPassword = await bcrypt.hash(String(password), salt);
 
   const user = await prisma.user.create({
-    data: { email, password: hashedPassword, name },
+    data: { password: hashedPassword, userName },
   });
 
   const payload = { user: { id: user.id } };
@@ -36,10 +36,10 @@ router.post("/register", async (req, res) => {
 
 // POST: Login user
 router.post("/login", async (req, res) => {
-  const { email, password } = req.body;
+  const { userName, password } = req.body;
 
   try {
-    const user = await prisma.user.findUnique({ where: { email } });
+    const user = await prisma.user.findUnique({ where: { userName } });
     if (!user) return res.status(400).json({ error: "Invalid credentials" });
 
     const isMatch = await bcrypt.compare(password, user.password);

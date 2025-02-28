@@ -4,8 +4,7 @@ import useAuth from "../../hooks/useAuth";
 const Register = () => {
   useAuth();
   const [formData, setFormData] = useState({
-    email: "",
-    name: "",
+    userName: "",
     password: "",
   });
 
@@ -30,7 +29,7 @@ const Register = () => {
         window.location.href = "/dashboard";
         localStorage.setItem("token", data.token);
       } else {
-        alert("Failed to create user. email already exists");
+        alert("Failed to create user. username already exists");
       }
     } catch (error) {
       alert(error);
@@ -45,20 +44,9 @@ const Register = () => {
           <label className="block text-gray-700 mb-2">Username</label>
           <input
             type="text"
-            name="name"
-            value={formData.name}
+            name="userName"
+            value={formData.userName}
             onChange={handleChange}
-            className="w-full p-2 border rounded-xl"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 mb-2">Email</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
             className="w-full p-2 border rounded-xl"
           />
         </div>
