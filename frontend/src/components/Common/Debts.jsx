@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 export default function Debts() {
   const [debts, setDebts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState(1);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,6 +36,7 @@ export default function Debts() {
   }, []);
   const openDebts = debts.filter((debt) => debt.status === "OPEN");
   const closedDebts = debts.filter((debt) => debt.status === "CLOSED");
+
   if (loading) {
     return (
       <div className="max-w-lg mx-auto p-6 bg-white shadow-md rounded-lg">
@@ -45,40 +47,62 @@ export default function Debts() {
   }
   return (
     <div className="max-w-lg mx-auto p-6 bg-white shadow-md rounded-lg">
-      <h2 className="text-xl font-bold mb-4">Open Debts Owing to You</h2>
-      {openDebts.length > 0 ? (
-        <ul>
-          {openDebts.map((debt) => (
-            <li
-              key={debt.id}
-              className="p-2 border-b cursor-pointer hover:bg-gray-100"
-              onClick={() => navigate(`/debts/${debt.slug}`)}
-            >
-              <strong>{debt.title}</strong> - ${debt.amountOwed} Owed
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p className="text-center text-gray-500">
-          No open debts. Create one now to get started!
-        </p>
-      )}
+      <div className="flex justify-evenly mb-4">
+        <h2
+          className={`text-xl font-bold cursor-pointer ${
+            activeTab === 1 ? "text-blue-500 " : "hover:bg-blue-100 rounded"
+          }`}
+          onClick={() => setActiveTab(1)}
+        >
+          Open Debts
+        </h2>
+        <h2
+          className={`text-xl font-bold cursor-pointer ${
+            activeTab === 2 ? "text-blue-500" : "hover:bg-blue-100 rounded"
+          }`}
+          onClick={() => setActiveTab(2)}
+        >
+          Closed Debts
+        </h2>
+      </div>
 
-      {closedDebts.length > 0 && (
-        <>
-          <h2 className="text-xl font-bold mt-8 mb-4">Closed Debts</h2>
+      {activeTab === 1 ? (
+        openDebts.length > 0 ? (
           <ul>
-            {closedDebts.map((debt) => (
+            {openDebts.map((debt) => (
               <li
                 key={debt.id}
                 className="p-2 border-b cursor-pointer hover:bg-gray-100"
                 onClick={() => navigate(`/debts/${debt.slug}`)}
               >
-                <strong>{debt.title}</strong> - ${debt.amountOwed} Owed
+                <div className="flex justify-between">
+                  <strong>{debt.title}</strong>{" "}
+                  <strong>${debt.amountOwed} Owed</strong>
+                </div>
               </li>
             ))}
           </ul>
-        </>
+        ) : (
+          <p className="text-center text-gray-500">
+            No open debts. Create one now to get started!
+          </p>
+        )
+      ) : (
+        closedDebts.length > 0 && (
+          <>
+            <ul>
+              {closedDebts.map((debt) => (
+                <li
+                  key={debt.id}
+                  className="p-2 border-b cursor-pointer hover:bg-gray-100"
+                  onClick={() => navigate(`/debts/${debt.slug}`)}
+                >
+                  <strong>{debt.title}</strong> - ${debt.amountOwed} Owed
+                </li>
+              ))}
+            </ul>
+          </>
+        )
       )}
     </div>
   );

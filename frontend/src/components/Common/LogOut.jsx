@@ -5,5 +5,12 @@ export default function LogOut() {
     alert("logged out!");
   };
 
-  return <button onClick={handleLogOut}>Log Out</button>;
+  return (
+    <button
+      className="mt-4 p-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
+      onClick={handleLogOut}
+    >
+      Log Out
+    </button>
+  );
 }
