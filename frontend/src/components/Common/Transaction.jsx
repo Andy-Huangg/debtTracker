@@ -50,7 +50,7 @@ export default function TransactionList({ transactions }) {
               </p>
               <p>
                 <strong>Date:</strong>{" "}
-                {new Date(transaction.createdAt).toLocaleDateString()}
+                {new Date(transaction.createdAt).toLocaleString()}
               </p>
             </div>
           )}

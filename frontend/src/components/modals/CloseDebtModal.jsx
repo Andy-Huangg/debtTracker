@@ -42,20 +42,25 @@ export default function CloseDebtModal({ isOpen, onRequestClose, slug }) {
       contentLabel="Confirm Close Debt"
       style={customStyles}
     >
-      <h2>Confirm Debt Closure</h2>
       <p>
-        Are you sure you want to close this debt? This action cannot be undone.
+        <p>
+          <strong>
+            <u>Are you sure you want to close this debt?</u>
+          </strong>
+          <br></br> This action is irreversible and will prevent further edits
+          or transactions.
+        </p>
       </p>
       <div className="flex justify-between mt-4">
         <button
           onClick={handleSubmit}
-          className="p-2 bg-red-500 text-white rounded"
+          className="p-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
         >
           Yes, Close Debt
         </button>
         <button
           onClick={onRequestClose}
-          className="p-2 bg-gray-300 text-black rounded"
+          className="p-2 bg-gray-300 text-black rounded hover:bg-gray-400 transition"
         >
           Cancel
         </button>

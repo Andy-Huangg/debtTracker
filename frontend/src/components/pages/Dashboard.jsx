@@ -11,7 +11,9 @@ const Dashboard = () => {
       <h1>Dashboard</h1>
       <Debts></Debts>
       <LogOut></LogOut>
-      <RedirectButton redirectUrl={"/CreateDebt"}>Create Debt</RedirectButton>
+      <RedirectButton redirectUrl={"/CreateDebt"}>
+        Create Debt Owing to you
+      </RedirectButton>
     </div>
   );
 };

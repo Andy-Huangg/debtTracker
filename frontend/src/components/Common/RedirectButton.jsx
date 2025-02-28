@@ -6,7 +6,7 @@ export default function RedirectButton({ redirectUrl, children }) {
   return (
     <button
       onClick={handleClick}
-      className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
+      className="mt-4 p-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
     >
       {children}
     </button>

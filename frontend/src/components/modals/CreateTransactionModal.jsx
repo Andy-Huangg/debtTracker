@@ -74,8 +74,8 @@ export default function CreateTransactionModal({
           onChange={(e) => setType(e.target.value)}
           className="w-full p-2 border rounded mb-2"
         >
-          <option value="INCREASE">Increase Debt</option>
           <option value="PAYMENT">Payment</option>
+          <option value="INCREASE">Increase Debt</option>
         </select>
         <label>Description</label>
         <textarea
@@ -84,7 +84,6 @@ export default function CreateTransactionModal({
           placeholder="Enter a description for the transaction"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          required
         ></textarea>
         <button
           type="submit"
