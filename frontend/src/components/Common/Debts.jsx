@@ -46,7 +46,7 @@ export default function Debts() {
     );
   }
   return (
-    <div className="max-w-lg mx-auto p-6 bg-white shadow-md rounded-lg">
+    <div className="">
       <div className="flex justify-evenly mb-4">
         <h2
           className={`text-xl font-bold cursor-pointer ${
