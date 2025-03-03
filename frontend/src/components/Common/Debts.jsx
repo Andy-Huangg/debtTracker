@@ -37,8 +37,10 @@ export default function Debts() {
 
     fetchDebts();
   }, []);
+
   const openDebts = debts.filter((debt) => debt.status === "OPEN");
   const closedDebts = debts.filter((debt) => debt.status === "CLOSED");
+
   const openCreateDebtModal = () => {
     setCreateDebtModalIsOpen(true);
   };
@@ -49,12 +51,56 @@ export default function Debts() {
 
   if (loading) {
     return (
-      <div className="max-w-lg mx-auto p-6 bg-white shadow-md rounded-lg">
-        <h2 className="text-xl font-bold mb-4">Open Debts Owing to You</h2>
-        Loading...
+      <div className="fade-in">
+        <div className="flex justify-evenly mb-4">
+          <div
+            className={`flex-1 text-center p-4 cursor-pointer bg-stone-200 ${
+              activeTab === 1 ? "" : "hover:bg-blue-100"
+            }`}
+            onClick={() => setActiveTab(1)}
+          >
+            <h2
+              className={`text-xl font-bold ${
+                activeTab === 1 ? "text-blue-500" : ""
+              }`}
+            >
+              Open Debts
+            </h2>
+          </div>
+          <div className="w-px bg-gray-400"></div>
+          <div
+            className={`flex-1 text-center p-4 cursor-pointer bg-stone-200 ${
+              activeTab === 2 ? "" : "hover:bg-blue-100"
+            }`}
+            onClick={() => setActiveTab(2)}
+          >
+            <h2
+              className={`text-xl font-bold ${
+                activeTab === 2 ? "text-blue-500" : ""
+              }`}
+            >
+              Closed Debts
+            </h2>
+          </div>
+        </div>
+        <div className="flex justify-center mb-4">
+          <button
+            onClick={openCreateDebtModal}
+            className="mt-4 p-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+          >
+            Create Debt
+          </button>
+        </div>
+        <div className="flex justify-center">
+          <h1 className="mt-10 text-4xl">
+            {" "}
+            <strong>Loading...</strong>
+          </h1>
+        </div>
       </div>
     );
   }
+
   return (
     <div className="">
       <div className="flex justify-evenly mb-4">
