@@ -110,7 +110,6 @@ export default function DebtBySlug() {
 
   return (
     <Layout>
-      {setDebt(null)}
       <div className="flex justify-center items-start space-x-8 p-8">
         <div className="flex-grow max-w-2xl bg-white p-8 rounded-2xl shadow-lg">
           <div>
