@@ -1,20 +1,18 @@
-import { useState } from "react";
-import useAuth from "../../hooks/useAuth";
-import RedirectButton from "../Common/RedirectButton";
+import React, { useState, useEffect } from "react";
+import Modal from "react-modal";
+import customStyles from "./ModalStyles";
 import { useNavigate } from "react-router-dom";
-import Layout from "../Common/LayOut";
+Modal.setAppElement("#root");
 
-export default function CreateDebt() {
+export default function CreateDebtModal({ isOpen, onRequestClose }) {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [amountOwed, setAmountOwed] = useState("");
-  useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem("token");
-
     const debtData = {
       title,
       description,
@@ -51,7 +49,12 @@ export default function CreateDebt() {
   };
 
   return (
-    <Layout>
+    <Modal
+      isOpen={isOpen}
+      onRequestClose={onRequestClose}
+      contentLabel="Create Debt"
+      style={customStyles}
+    >
       <div className="max-w-lg mx-auto p-6 bg-white shadow-md rounded-lg">
         <h2 className="text-xl font-bold mb-4">Create a New Debt</h2>
         <form onSubmit={handleSubmit}>
@@ -81,16 +84,18 @@ export default function CreateDebt() {
 
           <button
             type="submit"
-            className="mt-4 w-full p-2 bg-green-500 text-white rounded"
+            className="mt-4 w-full p-2 bg-green-500 hover:bg-green-600 text-white rounded"
           >
             Create Debt
           </button>
+          <button
+            onClick={onRequestClose}
+            className="mt-4 w-full p-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
+          >
+            Cancel
+          </button>
         </form>
-
-        <RedirectButton redirectUrl={"/Dashboard"}>
-          Back to Dashboard
-        </RedirectButton>
       </div>
-    </Layout>
+    </Modal>
   );
 }

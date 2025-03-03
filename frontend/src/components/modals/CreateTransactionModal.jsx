@@ -57,7 +57,9 @@ export default function CreateTransactionModal({
       contentLabel="Create Transaction"
       style={customStyles}
     >
-      <h2>Create Transaction</h2>
+      <h2>
+        <strong>Create Transaction</strong>
+      </h2>
       <form onSubmit={handleSubmit}>
         <label>Transaction Amount</label>
         <input

@@ -51,7 +51,9 @@ export default function EditDebtModal({ isOpen, onRequestClose, debt, slug }) {
       contentLabel="Edit Debt"
       style={customStyles}
     >
-      <h2>Edit Debt Details</h2>
+      <h2>
+        <strong>Edit Debt Details</strong>
+      </h2>
       <form onSubmit={handleSubmit}>
         <label htmlFor="title">Debt Title</label>
         <input

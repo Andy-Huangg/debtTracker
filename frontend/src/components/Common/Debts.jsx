@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import RedirectButton from "./RedirectButton";
+import CreateDebtModal from "../modals/CreateDebtModal";
 
 export default function Debts() {
   const [debts, setDebts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState(1);
+  const [createDebtModalIsOpen, setCreateDebtModalIsOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -37,6 +39,13 @@ export default function Debts() {
   }, []);
   const openDebts = debts.filter((debt) => debt.status === "OPEN");
   const closedDebts = debts.filter((debt) => debt.status === "CLOSED");
+  const openCreateDebtModal = () => {
+    setCreateDebtModalIsOpen(true);
+  };
+
+  const closeCreateDebtModal = () => {
+    setCreateDebtModalIsOpen(false);
+  };
 
   if (loading) {
     return (
@@ -63,7 +72,7 @@ export default function Debts() {
             Open Debts
           </h2>
         </div>
-        <div className="w-px bg-gray-400"></div> {/* Vertical line */}
+        <div className="w-px bg-gray-400"></div>
         <div
           className={`flex-1 text-center p-4 cursor-pointer bg-stone-200 ${
             activeTab === 2 ? "" : "hover:bg-blue-100"
@@ -80,9 +89,12 @@ export default function Debts() {
         </div>
       </div>
       <div className="flex justify-center mb-4">
-        <RedirectButton redirectUrl={"/CreateDebt"}>
-          Create New Debt
-        </RedirectButton>
+        <button
+          onClick={openCreateDebtModal}
+          className="mt-4 p-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+        >
+          Create Debt
+        </button>
       </div>
 
       {activeTab === 1 ? (
@@ -126,6 +138,10 @@ export default function Debts() {
           </>
         )
       )}
+      <CreateDebtModal
+        isOpen={createDebtModalIsOpen}
+        onRequestClose={closeCreateDebtModal}
+      ></CreateDebtModal>
     </div>
   );
 }
