@@ -15,13 +15,7 @@ const Dashboard = () => {
         <div className="flex-grow p-4 bg-white shadow-md rounded-lg overflow-auto">
           <Debts />
         </div>
-        <div className="flex flex-col w-1/4">
-          <h1>Dashboard</h1>
-          <LogOut></LogOut>
-          <RedirectButton redirectUrl={"/CreateDebt"}>
-            Create Debt Owing to
-          </RedirectButton>
-        </div>
+        <div className="flex flex-col w-1/4"></div>
       </div>
     </Layout>
   );

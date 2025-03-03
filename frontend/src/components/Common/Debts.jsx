@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import RedirectButton from "./RedirectButton";
 
 export default function Debts() {
   const [debts, setDebts] = useState([]);
@@ -48,22 +49,40 @@ export default function Debts() {
   return (
     <div className="">
       <div className="flex justify-evenly mb-4">
-        <h2
-          className={`text-xl font-bold cursor-pointer ${
-            activeTab === 1 ? "text-blue-500 " : "hover:bg-blue-100 rounded"
+        <div
+          className={`flex-1 text-center p-4 cursor-pointer bg-stone-200 ${
+            activeTab === 1 ? "" : "hover:bg-blue-100"
           }`}
           onClick={() => setActiveTab(1)}
         >
-          Open Debts
-        </h2>
-        <h2
-          className={`text-xl font-bold cursor-pointer ${
-            activeTab === 2 ? "text-blue-500" : "hover:bg-blue-100 rounded"
+          <h2
+            className={`text-xl font-bold ${
+              activeTab === 1 ? "text-blue-500" : ""
+            }`}
+          >
+            Open Debts
+          </h2>
+        </div>
+        <div className="w-px bg-gray-400"></div> {/* Vertical line */}
+        <div
+          className={`flex-1 text-center p-4 cursor-pointer bg-stone-200 ${
+            activeTab === 2 ? "" : "hover:bg-blue-100"
           }`}
           onClick={() => setActiveTab(2)}
         >
-          Closed Debts
-        </h2>
+          <h2
+            className={`text-xl font-bold ${
+              activeTab === 2 ? "text-blue-500" : ""
+            }`}
+          >
+            Closed Debts
+          </h2>
+        </div>
+      </div>
+      <div className="flex justify-center mb-4">
+        <RedirectButton redirectUrl={"/CreateDebt"}>
+          Create New Debt
+        </RedirectButton>
       </div>
 
       {activeTab === 1 ? (
@@ -97,7 +116,10 @@ export default function Debts() {
                   className="p-2 border-b cursor-pointer hover:bg-gray-100"
                   onClick={() => navigate(`/debts/${debt.slug}`)}
                 >
-                  <strong>{debt.title}</strong> - ${debt.amountOwed} Owed
+                  <div className="flex justify-between">
+                    <strong>{debt.title}</strong>{" "}
+                    <strong>${debt.amountOwed} Owed</strong>
+                  </div>
                 </li>
               ))}
             </ul>

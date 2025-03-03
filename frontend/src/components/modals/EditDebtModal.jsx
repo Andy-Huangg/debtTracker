@@ -74,14 +74,14 @@ export default function EditDebtModal({ isOpen, onRequestClose, debt, slug }) {
         ></textarea>
         <button
           type="submit"
-          className="mt-4 w-full p-2 bg-green-500 text-white rounded"
+          className="mt-4 w-full p-2 bg-green-500 hover:bg-green-600 text-white rounded"
         >
           Save Changes
         </button>
       </form>
       <button
         onClick={onRequestClose}
-        className="mt-4 w-full p-2 bg-gray-300 text-black rounded"
+        className="mt-4 w-full p-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
       >
         Cancel
       </button>

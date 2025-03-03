@@ -87,14 +87,14 @@ export default function CreateTransactionModal({
         ></textarea>
         <button
           type="submit"
-          className="mt-4 w-full p-2 bg-green-500 text-white rounded"
+          className="mt-4 w-full p-2 bg-green-500 hover:bg-green-600 transition text-white rounded"
         >
           Create Transaction
         </button>
       </form>
       <button
         onClick={onRequestClose}
-        className="mt-4 w-full p-2 bg-red-500 text-white rounded"
+        className="mt-4 w-full p-2 bg-red-500 text-white rounded hover:bg-red-600 transition "
       >
         Cancel
       </button>

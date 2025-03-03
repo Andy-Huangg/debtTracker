@@ -54,7 +54,7 @@ export default function CloseDebtModal({ isOpen, onRequestClose, slug }) {
       <div className="flex justify-between mt-4">
         <button
           onClick={handleSubmit}
-          className="p-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
+          className="p-2 bg-red-500 text-white rounded hover:bg-red-700 transition"
         >
           Yes, Close Debt
         </button>
