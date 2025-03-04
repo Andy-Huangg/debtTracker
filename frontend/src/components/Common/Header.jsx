@@ -1,8 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import LogOut from "./LogOut";
+import CheckAuth from "./CheckAuth";
 
 const Header = () => {
+  const isAuth = CheckAuth();
   return (
     <div className="flex justify-between items-center p-2 bg-gray-800 text-white shadow-md">
       <Link to="/dashboard" className="ml-5">
@@ -10,9 +12,11 @@ const Header = () => {
           Debt Tracker
         </h1>
       </Link>
-      <div className="mr-5">
-        <LogOut />
-      </div>
+      {isAuth && (
+        <div className="mr-5">
+          <LogOut />
+        </div>
+      )}
     </div>
   );
 };
