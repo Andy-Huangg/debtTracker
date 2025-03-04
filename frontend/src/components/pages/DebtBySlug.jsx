@@ -5,7 +5,6 @@ import TransactionList from "../Common/Transaction";
 import CloseDebtModal from "../modals/CloseDebtModal";
 import RedirectButton from "../Common/RedirectButton";
 import EditDebtModal from "../modals/EditDebtModal";
-import Header from "../Common/Header";
 import Layout from "../Common/LayOut";
 
 export default function DebtBySlug() {
@@ -15,6 +14,7 @@ export default function DebtBySlug() {
   const [closeDebtModalIsOpen, setCloseDebtModalIsOpen] = useState(false);
   const [editDebtModalIsOpen, setEditDebtModalIsOpen] = useState(false);
   const [copySuccess, setCopySuccess] = useState("");
+  const [fabOpen, setFabOpen] = useState(false);
 
   const fetchDebtDetails = async () => {
     const token = localStorage.getItem("token");
@@ -110,8 +110,9 @@ export default function DebtBySlug() {
 
   return (
     <Layout>
-      <div className="flex justify-center items-start space-x-8 p-8">
-        <div className="flex-grow max-w-2xl bg-white p-8 rounded-2xl shadow-lg">
+      <div className="flex h-screen xl:flex-row flex-col">
+        <div className="xl:w-1/5"></div>
+        <div className="flex-grow p-4 bg-white shadow-md rounded-lg ">
           <div>
             <div className="flex justify-between">
               <h1>
@@ -142,73 +143,118 @@ export default function DebtBySlug() {
             <div>Loading...</div>
           )}
         </div>
-        <div className="flex-shrink-0 w-96">
-          {debt.currentUserId === debt.userId && (
-            <div className="flex-shrink-0 w-64 bg-slate-100 p-8 rounded-2xl shadow-lg">
-              <RedirectButton redirectUrl={"/dashboard"}>
-                Back to Dashboard
-              </RedirectButton>
-              {debt.currentUserId === debt.userId && debt.status === "OPEN" && (
-                <div>
-                  <button
-                    onClick={openEditDebtModal}
-                    className="mt-4 p-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
-                  >
-                    Edit debt details
-                  </button>
-                  <button
-                    onClick={openTransactionModal}
-                    className="mt-4 p-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
-                  >
-                    Create Transaction
-                  </button>
-                  <button
-                    onClick={openCloseDebtModal}
-                    className="mt-4 p-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
-                  >
-                    Close debt
-                  </button>
-                </div>
+        <div className="xl:w-1/3 hidden xl:block ">
+          <div className="flex-shrink-0 w-96 ml-5">
+            {debt.currentUserId === debt.userId && (
+              <div className="flex-shrink-0 w-64 bg-slate-100 p-8 rounded-2xl shadow-lg">
+                <RedirectButton redirectUrl={"/dashboard"}>
+                  Back to Dashboard
+                </RedirectButton>
+                {debt.currentUserId === debt.userId &&
+                  debt.status === "OPEN" && (
+                    <div>
+                      <button
+                        onClick={openEditDebtModal}
+                        className="mt-4 p-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+                      >
+                        Edit debt details
+                      </button>
+                      <button
+                        onClick={openTransactionModal}
+                        className="mt-4 p-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+                      >
+                        Create Transaction
+                      </button>
+                      <button
+                        onClick={openCloseDebtModal}
+                        className="mt-4 p-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
+                      >
+                        Close debt
+                      </button>
+                    </div>
+                  )}
+              </div>
+            )}
+            <div className="mt-4 bg-slate-100 p-8 rounded-2xl shadow-lg">
+              <h2 className="font-bold mb-2">Share this debt for viewing</h2>
+              <div className="flex items-center mt-2">
+                <input
+                  type="text"
+                  value={window.location.href}
+                  readOnly
+                  className="w-full p-2 border rounded-l-lg"
+                />
+                <button
+                  onClick={copyToClipboard}
+                  className="p-2 ml-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+                >
+                  Copy
+                </button>
+              </div>
+              {copySuccess && (
+                <p className="mt-2 text-green-500">{copySuccess}</p>
               )}
             </div>
-          )}
-          <div className="mt-4 bg-slate-100 p-8 rounded-2xl shadow-lg">
-            <h2 className="font-bold mb-2">Share this debt for viewing</h2>
-            <div className="flex items-center mt-2">
-              <input
-                type="text"
-                value={window.location.href}
-                readOnly
-                className="w-full p-2 border rounded-l-lg"
-              />
-              <button
-                onClick={copyToClipboard}
-                className="p-2 ml-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
-              >
-                Copy
-              </button>
-            </div>
-            {copySuccess && (
-              <p className="mt-2 text-green-500">{copySuccess}</p>
-            )}
           </div>
+          <CreateTransactionModal
+            isOpen={transactionModalIsOpen}
+            onRequestClose={closeTransactionModal}
+            slug={slug}
+          />
+          <CloseDebtModal
+            isOpen={closeDebtModalIsOpen}
+            onRequestClose={closeDebtModal}
+            slug={slug}
+          />
+          <EditDebtModal
+            isOpen={editDebtModalIsOpen}
+            onRequestClose={closeEditDebtModal}
+            slug={slug}
+            debt={debt}
+          />
         </div>
-        <CreateTransactionModal
-          isOpen={transactionModalIsOpen}
-          onRequestClose={closeTransactionModal}
-          slug={slug}
-        />
-        <CloseDebtModal
-          isOpen={closeDebtModalIsOpen}
-          onRequestClose={closeDebtModal}
-          slug={slug}
-        />
-        <EditDebtModal
-          isOpen={editDebtModalIsOpen}
-          onRequestClose={closeEditDebtModal}
-          slug={slug}
-          debt={debt}
-        />
+      </div>
+
+      {/* Floating Action Button for Mobile */}
+      <div className="fixed bottom-4 right-4 block xl:hidden">
+        <button
+          onClick={() => setFabOpen(!fabOpen)}
+          className={`bg-blue-500 text-white w-16 h-16 shadow-lg hover:bg-blue-600 transition flex items-center justify-center text-4xl ${
+            fabOpen ? "rounded-lg" : "rounded-full"
+          }`}
+        >
+          {fabOpen ? "×" : "+"}
+        </button>
+        {fabOpen && (
+          <div className="mt-2 space-y-2">
+            <button
+              onClick={openEditDebtModal}
+              className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+            >
+              Edit debt details
+            </button>
+            <button
+              onClick={openTransactionModal}
+              className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+            >
+              Create Transaction
+            </button>
+            <button
+              onClick={copyToClipboard}
+              className={`w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition ${
+                copySuccess ? "bg-green-500" : "bg-blue-500"
+              }`}
+            >
+              {copySuccess ? "Link Copied!" : "Share Debt"}
+            </button>
+            <button
+              onClick={openCloseDebtModal}
+              className="w-full p-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
+            >
+              Close debt
+            </button>
+          </div>
+        )}
       </div>
     </Layout>
   );
