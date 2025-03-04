@@ -216,46 +216,49 @@ export default function DebtBySlug() {
       </div>
 
       {/* Floating Action Button for Mobile */}
-      <div className="fixed bottom-4 right-4 block xl:hidden">
-        <button
-          onClick={() => setFabOpen(!fabOpen)}
-          className={`bg-blue-500 text-white w-16 h-16 shadow-lg hover:bg-blue-600 transition flex items-center justify-center text-4xl ${
-            fabOpen ? "rounded-lg" : "rounded-full"
-          }`}
-        >
-          {fabOpen ? "×" : "+"}
-        </button>
-        {fabOpen && (
-          <div className="mt-2 space-y-2">
-            <button
-              onClick={openEditDebtModal}
-              className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
-            >
-              Edit debt details
-            </button>
-            <button
-              onClick={openTransactionModal}
-              className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
-            >
-              Create Transaction
-            </button>
-            <button
-              onClick={copyToClipboard}
-              className={`w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition ${
-                copySuccess ? "bg-green-500" : "bg-blue-500"
-              }`}
-            >
-              {copySuccess ? "Link Copied!" : "Share Debt"}
-            </button>
-            <button
-              onClick={openCloseDebtModal}
-              className="w-full p-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
-            >
-              Close debt
-            </button>
-          </div>
-        )}
-      </div>
+
+      {debt.currentUserId === debt.userId && (
+        <div className="fixed bottom-4 right-4 block xl:hidden">
+          <button
+            onClick={() => setFabOpen(!fabOpen)}
+            className={`bg-blue-500 text-white w-16 h-16 shadow-lg hover:bg-blue-600 transition flex items-center justify-center text-4xl ${
+              fabOpen ? "rounded-lg" : "rounded-full"
+            }`}
+          >
+            {fabOpen ? "×" : "+"}
+          </button>
+          {fabOpen && (
+            <div className="mt-2 space-y-2">
+              <button
+                onClick={openEditDebtModal}
+                className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+              >
+                Edit debt details
+              </button>
+              <button
+                onClick={openTransactionModal}
+                className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+              >
+                Create Transaction
+              </button>
+              <button
+                onClick={copyToClipboard}
+                className={`w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition ${
+                  copySuccess ? "bg-green-500" : "bg-blue-500"
+                }`}
+              >
+                {copySuccess ? "Link Copied!" : "Share Debt"}
+              </button>
+              <button
+                onClick={openCloseDebtModal}
+                className="w-full p-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
+              >
+                Close debt
+              </button>
+            </div>
+          )}
+        </div>
+      )}
     </Layout>
   );
 }
