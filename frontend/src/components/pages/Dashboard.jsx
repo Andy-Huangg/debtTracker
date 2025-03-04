@@ -10,12 +10,12 @@ const Dashboard = () => {
   useAuth();
   return (
     <Layout>
-      <div className="flex p-8 h-screen">
-        <div className="w-1/4"></div>
+      <div className="flex xl:p-8 h-screen">
+        <div className="xl:w-1/4"></div>
         <div className="flex-grow p-4 bg-white shadow-md rounded-lg overflow-auto">
           <Debts />
         </div>
-        <div className="flex flex-col w-1/4"></div>
+        <div className="xl:w-1/4"></div>
       </div>
     </Layout>
   );
