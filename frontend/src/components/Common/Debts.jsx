@@ -126,7 +126,9 @@ export default function Debts() {
         >
           <h2
             className={`text-xl font-bold ${
-              activeTab === 1 ? "text-blue-500" : ""
+              activeTab === 1
+                ? "text-blue-500"
+                : "hover:scale-110 transition-transform duration-100"
             }`}
           >
             Open Debts
@@ -141,7 +143,9 @@ export default function Debts() {
         >
           <h2
             className={`text-xl font-bold ${
-              activeTab === 2 ? "text-blue-500" : ""
+              activeTab === 2
+                ? "text-blue-500"
+                : "hover:scale-110 transition-transform duration-100"
             }`}
           >
             Closed Debts
