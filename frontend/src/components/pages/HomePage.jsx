@@ -5,8 +5,8 @@ function HomePage() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-blue-50 to-purple-50 py-12 px-4 sm:px-6 lg:px-8">
-      <nav className="flex justify-between items-center mb-12">
+    <div className="min-h-screen bg-gradient-to-r from-blue-50 to-purple-50 py-4 px-4 sm:px-6 lg:px-8">
+      <nav className="flex justify-between items-center mb-12 sticky top-4">
         <div className="flex">
           <img
             src={favicon}
@@ -17,9 +17,19 @@ function HomePage() {
         </div>
 
         <div className="space-x-4 flex">
-          <Link to="/register">Register</Link>
+          <Link
+            className="bg-blue-700 text-white px-4 py-2 rounded-lg hover:bg-blue-800"
+            to="/register"
+          >
+            Register
+          </Link>
           <br></br>
-          <Link to="/login">Login</Link>
+          <Link
+            className="bg-white text-blue-700 px-4 py-2 rounded-lg border border-blue-700 hover:bg-blue-50"
+            to="/login"
+          >
+            Login
+          </Link>
         </div>
       </nav>
 
@@ -60,7 +70,7 @@ function HomePage() {
           <div className="md:w-1/2 lg:w-1/3flex justify-center mt-8 md:mt-0">
             <img
               src={DebtDisplayImage}
-              alt="Debt Tracker UI"
+              alt="Debt Tracker Image"
               className="w-full max-w-md md:max-w-lg lg:max-w-xl drop-shadow-lg"
             />
           </div>
