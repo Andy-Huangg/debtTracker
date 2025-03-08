@@ -126,9 +126,7 @@ export default function Debts() {
         >
           <h2
             className={`text-xl font-bold ${
-              activeTab === 1
-                ? "text-blue-500"
-                : "hover:scale-110 transition-transform duration-100"
+              activeTab === 1 ? "text-blue-500" : ""
             }`}
           >
             Open Debts
@@ -143,9 +141,7 @@ export default function Debts() {
         >
           <h2
             className={`text-xl font-bold ${
-              activeTab === 2
-                ? "text-blue-500"
-                : "hover:scale-110 transition-transform duration-100"
+              activeTab === 2 ? "text-blue-500" : ""
             }`}
           >
             Closed Debts
@@ -182,25 +178,28 @@ export default function Debts() {
             No open debts. Create one now to get started!
           </p>
         )
+      ) : closedDebts.length > 0 ? (
+        <>
+          <ul>
+            {closedDebts.map((debt) => (
+              <li
+                key={debt.id}
+                className="p-2 border-b cursor-pointer hover:bg-gray-100"
+                onClick={() => navigate(`/debts/${debt.slug}`)}
+              >
+                <div className="flex justify-between">
+                  <strong>{debt.title}</strong>{" "}
+                  <strong>${debt.amountOwed} Owed</strong>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </>
       ) : (
-        closedDebts.length > 0 && (
-          <>
-            <ul>
-              {closedDebts.map((debt) => (
-                <li
-                  key={debt.id}
-                  className="p-2 border-b cursor-pointer hover:bg-gray-100"
-                  onClick={() => navigate(`/debts/${debt.slug}`)}
-                >
-                  <div className="flex justify-between">
-                    <strong>{debt.title}</strong>{" "}
-                    <strong>${debt.amountOwed} Owed</strong>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </>
-        )
+        <p className="text-center text-gray-500">
+          You currently have no closed debts. Once a debt is marked as closed,
+          it will appear here.
+        </p>
       )}
       <CreateDebtModal
         isOpen={createDebtModalIsOpen}
