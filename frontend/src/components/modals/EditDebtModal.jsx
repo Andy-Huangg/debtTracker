@@ -3,9 +3,16 @@ import Modal from "react-modal";
 import customStyles from "./ModalStyles";
 Modal.setAppElement("#root");
 
-export default function EditDebtModal({ isOpen, onRequestClose, debt, slug }) {
+export default function EditDebtModal({
+  isOpen,
+  onRequestClose,
+  debt,
+  slug,
+  onEditDebt,
+}) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (debt) {
@@ -16,6 +23,7 @@ export default function EditDebtModal({ isOpen, onRequestClose, debt, slug }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
     const token = localStorage.getItem("token");
     const updatedData = {
       title,
@@ -37,10 +45,15 @@ export default function EditDebtModal({ isOpen, onRequestClose, debt, slug }) {
       if (!response.ok) {
         throw new Error("Failed to edit debt");
       }
+
+      onEditDebt(updatedData);
+
       onRequestClose();
     } catch (error) {
       console.error("Error editing debt:", error);
       alert("Error editing debt");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -64,6 +77,7 @@ export default function EditDebtModal({ isOpen, onRequestClose, debt, slug }) {
           onChange={(e) => setTitle(e.target.value)}
           required
           className="w-full p-2 border rounded mb-2"
+          disabled={isSubmitting}
         />
         <label htmlFor="description">Debt Description</label>
         <textarea
@@ -73,17 +87,20 @@ export default function EditDebtModal({ isOpen, onRequestClose, debt, slug }) {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           className="w-full p-2 border rounded mb-2"
+          disabled={isSubmitting}
         ></textarea>
         <button
           type="submit"
           className="mt-4 w-full p-2 bg-green-500 hover:bg-green-600 text-white rounded"
+          disabled={isSubmitting}
         >
-          Save Changes
+          {isSubmitting ? "Saving..." : "Save Changes"}
         </button>
       </form>
       <button
         onClick={onRequestClose}
         className="mt-4 w-full p-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
+        disabled={isSubmitting}
       >
         Cancel
       </button>

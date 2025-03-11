@@ -81,6 +81,21 @@ export default function DebtBySlug() {
     );
   };
 
+  const handleCreateTransaction = (newTransaction) => {
+    setDebt((prevDebt) => ({
+      ...prevDebt,
+      transactions: [...prevDebt.transactions, newTransaction],
+    }));
+  };
+
+  const handleEditDebt = (updatedDebt) => {
+    setDebt((prevDebt) => ({
+      ...prevDebt,
+      title: updatedDebt.title,
+      description: updatedDebt.description,
+    }));
+  };
+
   if (!debt) {
     return (
       <Layout>
@@ -200,6 +215,7 @@ export default function DebtBySlug() {
             isOpen={transactionModalIsOpen}
             onRequestClose={closeTransactionModal}
             slug={slug}
+            onCreateTransaction={handleCreateTransaction}
           />
           <CloseDebtModal
             isOpen={closeDebtModalIsOpen}
@@ -211,6 +227,7 @@ export default function DebtBySlug() {
             onRequestClose={closeEditDebtModal}
             slug={slug}
             debt={debt}
+            onEditDebt={handleEditDebt}
           />
         </div>
       </div>

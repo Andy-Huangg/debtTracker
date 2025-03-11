@@ -8,13 +8,16 @@ export default function CreateTransactionModal({
   isOpen,
   onRequestClose,
   slug,
+  onCreateTransaction,
 }) {
   const [amount, setAmount] = useState("");
   const [type, setType] = useState("INCREASE");
   const [description, setDescription] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
     const token = localStorage.getItem("token");
 
     const transactionData = {
@@ -40,6 +43,9 @@ export default function CreateTransactionModal({
         throw new Error("Failed to create transaction");
       }
 
+      const newTransaction = await response.json();
+      onCreateTransaction(newTransaction);
+
       setAmount("");
       setType("INCREASE");
       setDescription("");
@@ -47,6 +53,8 @@ export default function CreateTransactionModal({
     } catch (error) {
       console.error("Error creating transaction:", error);
       alert("Error creating transaction");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -69,12 +77,14 @@ export default function CreateTransactionModal({
           onChange={(e) => setAmount(e.target.value)}
           className="w-full p-2 border rounded mb-2"
           required
+          disabled={isSubmitting}
         />
         <label>Transaction Type</label>
         <select
           value={type}
           onChange={(e) => setType(e.target.value)}
           className="w-full p-2 border rounded mb-2"
+          disabled={isSubmitting}
         >
           <option value="PAYMENT">Payment</option>
           <option value="INCREASE">Increase Debt</option>
@@ -86,17 +96,20 @@ export default function CreateTransactionModal({
           placeholder="Enter a description for the transaction"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+          disabled={isSubmitting}
         ></textarea>
         <button
           type="submit"
           className="mt-4 w-full p-2 bg-green-500 hover:bg-green-600 transition text-white rounded"
+          disabled={isSubmitting}
         >
-          Create Transaction
+          {isSubmitting ? "Creating..." : "Create Transaction"}
         </button>
       </form>
       <button
         onClick={onRequestClose}
-        className="mt-4 w-full p-2 bg-red-500 text-white rounded hover:bg-red-600 transition "
+        className="mt-4 w-full p-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
+        disabled={isSubmitting}
       >
         Cancel
       </button>
