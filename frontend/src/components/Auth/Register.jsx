@@ -8,6 +8,7 @@ const Register = () => {
     userName: "",
     password: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -15,6 +16,7 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     try {
       const response = await fetch(
@@ -34,21 +36,33 @@ const Register = () => {
       }
     } catch (error) {
       alert(error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   const handleGuestLogin = async () => {
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userName: "Guest", password: "Guest" }),
-    });
-    if (response.ok) {
-      const data = await response.json();
-      localStorage.setItem("token", data.token);
-      window.location.href = "/dashboard";
-    } else {
-      alert("Failed to login as guest.");
+    setIsSubmitting(true);
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/auth/login`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userName: "Guest", password: "Guest" }),
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem("token", data.token);
+        window.location.href = "/dashboard";
+      } else {
+        alert("Failed to login as guest.");
+      }
+    } catch (error) {
+      alert(error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -68,6 +82,7 @@ const Register = () => {
               onChange={handleChange}
               required
               className="w-full p-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+              disabled={isSubmitting}
             />
           </div>
           <div className="mb-6">
@@ -79,21 +94,24 @@ const Register = () => {
               onChange={handleChange}
               required
               className="w-full p-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+              disabled={isSubmitting}
             />
           </div>
           <button
             type="submit"
             className="w-full bg-blue-500 text-white p-2 rounded-xl hover:bg-blue-600 transition mb-4"
+            disabled={isSubmitting}
           >
-            Register
+            {isSubmitting ? "Registering..." : "Register"}
           </button>
 
           <button
             type="button"
             onClick={handleGuestLogin}
             className="w-full bg-gray-500 text-white p-2 rounded-xl hover:bg-gray-600 transition"
+            disabled={isSubmitting}
           >
-            Login as Guest
+            {isSubmitting ? "Logging in/Registering" : "Login as Guest"}
           </button>
         </form>
 
