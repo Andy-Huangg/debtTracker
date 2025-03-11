@@ -10,38 +10,38 @@ export default function Debts() {
   const [createDebtModalIsOpen, setCreateDebtModalIsOpen] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchDebts = async () => {
-      const token = localStorage.getItem("token");
-      const cachedDebts = localStorage.getItem("debts");
+  const fetchDebts = async () => {
+    const token = localStorage.getItem("token");
+    var cachedDebts = localStorage.getItem("debts");
 
-      if (cachedDebts) {
-        setDebts(JSON.parse(cachedDebts));
+    if (cachedDebts) {
+      setDebts(JSON.parse(cachedDebts));
+      setLoading(false);
+    } else {
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/debts`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: token,
+            },
+          }
+        );
+        if (!response.ok) throw new Error("Failed to fetch debts");
+
+        const data = await response.json();
+        setDebts(data);
+        localStorage.setItem("debts", JSON.stringify(data));
+      } catch (error) {
+        console.error("Error fetching debts:", error);
+      } finally {
         setLoading(false);
-      } else {
-        try {
-          const response = await fetch(
-            `${import.meta.env.VITE_API_URL}/api/debts`,
-            {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: token,
-              },
-            }
-          );
-          if (!response.ok) throw new Error("Failed to fetch debts");
-
-          const data = await response.json();
-          setDebts(data);
-          localStorage.setItem("debts", JSON.stringify(data));
-        } catch (error) {
-          console.error("Error fetching debts:", error);
-        } finally {
-          setLoading(false);
-        }
       }
-    };
+    }
+  };
 
+  useEffect(() => {
     fetchDebts();
   }, []);
 
@@ -56,10 +56,11 @@ export default function Debts() {
     setCreateDebtModalIsOpen(false);
   };
 
-  const handleCreateDebt = (newDebt) => {
+  const handleCreateDebt = async (newDebt) => {
     const updatedDebts = [...debts, newDebt];
     setDebts(updatedDebts);
     localStorage.setItem("debts", JSON.stringify(updatedDebts));
+    await fetchDebts();
   };
 
   if (loading) {

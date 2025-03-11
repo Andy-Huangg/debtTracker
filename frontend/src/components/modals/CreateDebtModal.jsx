@@ -4,7 +4,11 @@ import customStyles from "./ModalStyles";
 import { useNavigate } from "react-router-dom";
 Modal.setAppElement("#root");
 
-export default function CreateDebtModal({ isOpen, onRequestClose }) {
+export default function CreateDebtModal({
+  isOpen,
+  onRequestClose,
+  onCreateDebt,
+}) {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -42,6 +46,7 @@ export default function CreateDebtModal({ isOpen, onRequestClose }) {
       setTitle("");
       setDescription("");
       setAmountOwed("");
+      onCreateDebt(data.newDebt);
     } catch (error) {
       console.error("Error creating debt:", error);
       alert("Error creating debt");
