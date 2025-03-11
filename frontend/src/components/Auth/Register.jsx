@@ -111,7 +111,7 @@ const Register = () => {
             className="w-full bg-gray-500 text-white p-2 rounded-xl hover:bg-gray-600 transition"
             disabled={isSubmitting}
           >
-            {isSubmitting ? "Logging in/Registering" : "Login as Guest"}
+            {isSubmitting ? "Logging in" : "Login as Guest"}
           </button>
         </form>
 

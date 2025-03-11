@@ -13,25 +13,32 @@ export default function Debts() {
   useEffect(() => {
     const fetchDebts = async () => {
       const token = localStorage.getItem("token");
+      const cachedDebts = localStorage.getItem("debts");
 
-      try {
-        const response = await fetch(
-          `${import.meta.env.VITE_API_URL}/api/debts`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: token,
-            },
-          }
-        );
-        if (!response.ok) throw new Error("Failed to fetch debts");
-
-        const data = await response.json();
-        setDebts(data);
-      } catch (error) {
-        console.error("Error fetching debts:", error);
-      } finally {
+      if (cachedDebts) {
+        setDebts(JSON.parse(cachedDebts));
         setLoading(false);
+      } else {
+        try {
+          const response = await fetch(
+            `${import.meta.env.VITE_API_URL}/api/debts`,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: token,
+              },
+            }
+          );
+          if (!response.ok) throw new Error("Failed to fetch debts");
+
+          const data = await response.json();
+          setDebts(data);
+          localStorage.setItem("debts", JSON.stringify(data));
+        } catch (error) {
+          console.error("Error fetching debts:", error);
+        } finally {
+          setLoading(false);
+        }
       }
     };
 
@@ -47,6 +54,12 @@ export default function Debts() {
 
   const closeCreateDebtModal = () => {
     setCreateDebtModalIsOpen(false);
+  };
+
+  const handleCreateDebt = (newDebt) => {
+    const updatedDebts = [...debts, newDebt];
+    setDebts(updatedDebts);
+    localStorage.setItem("debts", JSON.stringify(updatedDebts));
   };
 
   if (loading) {
@@ -204,7 +217,8 @@ export default function Debts() {
       <CreateDebtModal
         isOpen={createDebtModalIsOpen}
         onRequestClose={closeCreateDebtModal}
-      ></CreateDebtModal>
+        onCreateDebt={handleCreateDebt}
+      />
     </div>
   );
 }
