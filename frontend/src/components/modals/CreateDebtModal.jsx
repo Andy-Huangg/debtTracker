@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Modal from "react-modal";
 import customStyles from "./ModalStyles";
 import { useNavigate } from "react-router-dom";
@@ -13,9 +13,11 @@ export default function CreateDebtModal({
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [amountOwed, setAmountOwed] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
     const token = localStorage.getItem("token");
     const debtData = {
       title,
@@ -47,9 +49,12 @@ export default function CreateDebtModal({
       setDescription("");
       setAmountOwed("");
       onCreateDebt(data.newDebt);
+      onRequestClose();
     } catch (error) {
       console.error("Error creating debt:", error);
       alert("Error creating debt");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -70,6 +75,7 @@ export default function CreateDebtModal({
             onChange={(e) => setTitle(e.target.value)}
             className="w-full p-2 border rounded mb-2"
             required
+            disabled={isSubmitting}
           />
           <textarea
             className="w-full p-2 border rounded mb-2"
@@ -77,6 +83,7 @@ export default function CreateDebtModal({
             placeholder="Description (optional)"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
+            disabled={isSubmitting}
           ></textarea>
           <input
             type="number"
@@ -85,17 +92,20 @@ export default function CreateDebtModal({
             onChange={(e) => setAmountOwed(e.target.value)}
             className="w-full p-2 border rounded mb-2"
             required
+            disabled={isSubmitting}
           />
 
           <button
             type="submit"
             className="mt-4 w-full p-2 bg-green-500 hover:bg-green-600 text-white rounded"
+            disabled={isSubmitting}
           >
-            Create Debt
+            {isSubmitting ? "Creating..." : "Create Debt"}
           </button>
           <button
             onClick={onRequestClose}
             className="mt-4 w-full p-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
+            disabled={isSubmitting}
           >
             Cancel
           </button>

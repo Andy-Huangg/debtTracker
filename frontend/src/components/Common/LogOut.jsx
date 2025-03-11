@@ -1,5 +1,6 @@
 export default function LogOut() {
   const handleLogOut = () => {
+    localStorage.removeItem("debts");
     localStorage.removeItem("token");
     window.location.href = "/";
   };

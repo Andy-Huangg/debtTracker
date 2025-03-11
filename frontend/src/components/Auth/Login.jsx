@@ -17,6 +17,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    localStorage.removeItem("debts");
 
     try {
       const response = await fetch(
