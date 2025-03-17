@@ -10,17 +10,25 @@ const router = express.Router();
 // GET: Get debts by current user
 router.get("/", authMiddleware, async (req, res) => {
   try {
-    const debt = await prisma.debt.findMany({
+    const debts = await prisma.debt.findMany({
       where: {
         userId: req.user.id,
       },
+      include: {
+        user: {
+          select: {
+            id: true,
+            userName: true,
+          },
+        },
+      },
     });
 
-    if (!debt) {
+    if (!debts) {
       return res.status(404).json({ message: "Debt not found" });
     }
 
-    return res.json(debt);
+    return res.json(debts);
   } catch (error) {
     return res.status(500).json({ message: "Server error" });
   }
@@ -35,7 +43,17 @@ router.get("/:slug", async (req, res) => {
       where: {
         slug: slug,
       },
-      include: { user: true, transactions: { orderBy: { createdAt: "desc" } } },
+      include: {
+        user: {
+          select: {
+            id: true,
+            userName: true,
+          },
+        },
+        transactions: {
+          orderBy: { createdAt: "desc" },
+        },
+      },
     });
 
     if (!debt) {
@@ -44,7 +62,7 @@ router.get("/:slug", async (req, res) => {
 
     // Add current user id to result
     const token = req.header("Authorization");
-    currentUserId = null;
+    let currentUserId = null;
     if (token) {
       try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
