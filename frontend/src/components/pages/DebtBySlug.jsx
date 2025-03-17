@@ -86,6 +86,16 @@ export default function DebtBySlug() {
       ...prevDebt,
       transactions: [...prevDebt.transactions, newTransaction],
     }));
+
+    const cachedDebts = JSON.parse(localStorage.getItem("debts"));
+    const updatedDebts = cachedDebts.map((debt) => {
+      if (debt.slug === slug) {
+        return newTransaction.updatedDebt;
+      }
+      return debt;
+    });
+
+    localStorage.setItem("debts", JSON.stringify(updatedDebts));
   };
 
   const handleEditDebt = (updatedDebt) => {
