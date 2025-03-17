@@ -82,6 +82,7 @@ export default function DebtBySlug() {
     setDebt((prevDebt) => ({
       ...prevDebt,
       transactions: [newTransaction.transaction, ...prevDebt.transactions],
+      amountOwed: newTransaction.updatedDebt.amountOwed,
     }));
 
     const cachedDebts = JSON.parse(localStorage.getItem("debts"));
@@ -101,7 +102,6 @@ export default function DebtBySlug() {
       title: editedDebt.updatedDebt.title,
       description: editedDebt.updatedDebt.description,
     }));
-    console.log(debt);
 
     const cachedDebts = JSON.parse(localStorage.getItem("debts"));
     const updatedDebts = cachedDebts.map((debt) => {
