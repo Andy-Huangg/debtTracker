@@ -46,7 +46,9 @@ export default function EditDebtModal({
         throw new Error("Failed to edit debt");
       }
 
-      onEditDebt(updatedData);
+      const debt = await response.json();
+
+      onEditDebt(debt);
 
       onRequestClose();
     } catch (error) {

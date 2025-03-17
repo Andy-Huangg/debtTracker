@@ -98,12 +98,34 @@ export default function DebtBySlug() {
     localStorage.setItem("debts", JSON.stringify(updatedDebts));
   };
 
-  const handleEditDebt = (updatedDebt) => {
+  const handleEditDebt = (editedDebt) => {
     setDebt((prevDebt) => ({
       ...prevDebt,
-      title: updatedDebt.title,
-      description: updatedDebt.description,
+      title: editedDebt.title,
+      description: editedDebt.description,
     }));
+
+    const cachedDebts = JSON.parse(localStorage.getItem("debts"));
+    const updatedDebts = cachedDebts.map((debt) => {
+      if (debt.slug === slug) {
+        return editedDebt.updatedDebt;
+      }
+      return debt;
+    });
+
+    localStorage.setItem("debts", JSON.stringify(updatedDebts));
+  };
+
+  const handleCloseDebt = (closedDebt) => {
+    const cachedDebts = JSON.parse(localStorage.getItem("debts"));
+    const updatedDebts = cachedDebts.map((debt) => {
+      if (debt.slug === slug) {
+        return closedDebt.updatedDebt;
+      }
+      return debt;
+    });
+
+    localStorage.setItem("debts", JSON.stringify(updatedDebts));
   };
 
   if (!debt) {
@@ -231,6 +253,7 @@ export default function DebtBySlug() {
             isOpen={closeDebtModalIsOpen}
             onRequestClose={closeDebtModal}
             slug={slug}
+            onCloseDebt={handleCloseDebt}
           />
           <EditDebtModal
             isOpen={editDebtModalIsOpen}

@@ -4,7 +4,12 @@ import { useNavigate } from "react-router-dom";
 import customStyles from "./ModalStyles";
 Modal.setAppElement("#root");
 
-export default function CloseDebtModal({ isOpen, onRequestClose, slug }) {
+export default function CloseDebtModal({
+  isOpen,
+  onRequestClose,
+  slug,
+  onCloseDebt,
+}) {
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -28,7 +33,9 @@ export default function CloseDebtModal({ isOpen, onRequestClose, slug }) {
         throw new Error("Failed to close debt");
       }
 
+      const debt = await response.json();
       onRequestClose();
+      onCloseDebt(debt);
     } catch (error) {
       console.error("Error closing debt:", error);
       alert("Error closing debt");
