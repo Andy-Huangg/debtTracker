@@ -48,7 +48,6 @@ export default function DebtBySlug() {
 
   const closeTransactionModal = () => {
     setTransactionModalIsOpen(false);
-    fetchDebtDetails();
   };
 
   const openCloseDebtModal = () => {
@@ -57,7 +56,6 @@ export default function DebtBySlug() {
 
   const closeDebtModal = () => {
     setCloseDebtModalIsOpen(false);
-    fetchDebtDetails();
   };
 
   const openEditDebtModal = () => {
@@ -66,7 +64,6 @@ export default function DebtBySlug() {
 
   const closeEditDebtModal = () => {
     setEditDebtModalIsOpen(false);
-    fetchDebtDetails();
   };
 
   const copyToClipboard = () => {
@@ -84,7 +81,7 @@ export default function DebtBySlug() {
   const handleCreateTransaction = (newTransaction) => {
     setDebt((prevDebt) => ({
       ...prevDebt,
-      transactions: [...prevDebt.transactions, newTransaction],
+      transactions: [newTransaction.transaction, ...prevDebt.transactions],
     }));
 
     const cachedDebts = JSON.parse(localStorage.getItem("debts"));
@@ -101,14 +98,19 @@ export default function DebtBySlug() {
   const handleEditDebt = (editedDebt) => {
     setDebt((prevDebt) => ({
       ...prevDebt,
-      title: editedDebt.title,
-      description: editedDebt.description,
+      title: editedDebt.updatedDebt.title,
+      description: editedDebt.updatedDebt.description,
     }));
+    console.log(debt);
 
     const cachedDebts = JSON.parse(localStorage.getItem("debts"));
     const updatedDebts = cachedDebts.map((debt) => {
       if (debt.slug === slug) {
-        return editedDebt.updatedDebt;
+        return {
+          ...debt,
+          title: editedDebt.title,
+          description: editedDebt.description,
+        };
       }
       return debt;
     });
