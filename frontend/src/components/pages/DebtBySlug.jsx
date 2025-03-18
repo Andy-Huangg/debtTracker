@@ -108,8 +108,8 @@ export default function DebtBySlug() {
       if (debt.slug === slug) {
         return {
           ...debt,
-          title: editedDebt.title,
-          description: editedDebt.description,
+          title: editedDebt.updatedDebt.title,
+          description: editedDebt.updatedDebt.description,
         };
       }
       return debt;
