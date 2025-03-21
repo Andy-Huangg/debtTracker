@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import favicon from "../../assets/favicon.ico";
 import DebtDisplayImage from "../../assets/DebtDisplay.png";
+import ShareDebtImage from "../../assets/ShareDebt.png";
 function HomePage() {
   const navigate = useNavigate();
 
@@ -75,9 +76,42 @@ function HomePage() {
             />
           </div>
         </div>
+        {/* Share debt link section*/}
+        <div className="flex flex-col md:flex-row gap items-center gap-4 md:gap-0 justify-between px-6 md:px-12 lg:px-24 py-12">
+          <div className="md:w-1/2 lg:w-1/3 flex justify-center mt-8 md:mt-0">
+            <img
+              src={ShareDebtImage}
+              alt="Share Debt Link"
+              className="w-full max-w-md md:max-w-lg lg:max-w-xl drop-shadow-lg"
+            />
+          </div>
+
+          <div className="md:w-1/2 lg:w-2/3 flex-col text-center md:text-left flex justify-center items-center">
+            <h1 className="text-3xl md:text-5xl font-bold text-gray-800 flex justify-center">
+              Easily Share a Link
+            </h1>
+            <p className="mt-4 text-lg text-gray-600 flex justify-center">
+              Share a unique link with others so they can view the debt details.
+              No sign-up required—just send the link and stay updated!
+            </p>
+          </div>
+        </div>
       </div>
+
+      <footer className="text-center py-6 text-gray-600">
+        <p>
+          {"Developed by "}
+          <a
+            href="https://github.com/Andy-Huangg"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-purple-700 font-semibold hover:underline"
+          >
+            Andy
+          </a>
+        </p>
+      </footer>
     </div>
   );
 }
-
 export default HomePage;
